@@ -82,7 +82,7 @@ def readFromDB(company):
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
     # companyList = ["GOOG", "WMT", "MSFT", "IBM", "AMZN", "CSCO", "ORCL", "EBAY", "JPM", "FB"]
     # for company in companyList:
     #     getData(API_PREFIX, company)

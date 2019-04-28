@@ -19,3 +19,6 @@ keys/
 
 # cache
 __pycache__/
+
+*.xml
+*.iml
