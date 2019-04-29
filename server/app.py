@@ -30,7 +30,7 @@ def historicalData(company):
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT id, DATE_FORMAT(NOW(), '%Y-%m-%d')  AS time, open, high, low, close,volume FROM " + tableName
+        sql = "SELECT id, DATE_FORMAT(time, '%Y-%m-%d')  AS time, open, high, low, close,volume FROM " + tableName
         cursor.execute(sql)
         records = cursor.fetchall()
         cursor.close()
@@ -41,5 +41,28 @@ def historicalData(company):
         operations.getDataFromApiAndWriteToDisk(curPath + '/data', company)
         operations.writeToDB(curPath + '/data', company)
         return "sucess"
+
+@app.route('/historical-stock-data/<company>/query', methods=['POST'])
+def getStockByTimeFrame(company):
+    fromDate = "2018-12-01"
+    toDate = "2019-04-24"
+    tableName = "historical_data_" + company
+    db = mysql.connector.connect(**config)
+    cursor = db.cursor()
+    sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
+          "FROM %s " %(tableName) + \
+          "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" %(fromDate, toDate)
+
+    print(sql)
+    cursor.execute(sql)
+    records = cursor.fetchall()
+    print(records)
+    stockData = {"dates": [record[0] for record in records], "prices": [record[1] for record in records]}
+    cursor.close()
+    db.close()
+    print(stockData)
+    return json.dumps(stockData)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
