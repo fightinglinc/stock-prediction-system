@@ -28,40 +28,38 @@ def index():
 def historicalData(company):
     if request.method == 'GET':
         tableName = "historical_data_" + company
-        db = mysql.connector.connect(**config)
-        cursor = db.cursor()
-        sql = "SELECT id, DATE_FORMAT(time, '%Y-%m-%d')  AS time, open, high, low, close,volume FROM " + tableName
-        cursor.execute(sql)
-        records = cursor.fetchall()
-        cursor.close()
-        db.close()
-        return json.dumps(records)
+        if len(request.args) == 0:
+            db = mysql.connector.connect(**config)
+            cursor = db.cursor()
+            sql = "SELECT id, DATE_FORMAT(time, '%Y-%m-%d')  AS time, open, high, low, close,volume FROM " + tableName
+            cursor.execute(sql)
+            records = cursor.fetchall()
+            cursor.close()
+            db.close()
+            return json.dumps(records)
+        else:
+            startDate = request.args.get('from')
+            endDate = request.args.get('to')
+            db = mysql.connector.connect(**config)
+            cursor = db.cursor()
+            sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
+                  "FROM %s " %(tableName) + \
+                  "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" %(startDate, endDate)
+            cursor.execute(sql)
+            records = cursor.fetchall()
+            stockData = {"dates": [record[0] for record in records], "prices": [record[1] for record in records]}
+            cursor.close()
+            db.close()
+            print(stockData)
+            return json.dumps(stockData)
 
     if request.method == 'PUT':
         operations.getDataFromApiAndWriteToDisk(curPath + '/data', company)
         operations.writeToDB(curPath + '/data', company)
         return "sucess"
 
-@app.route('/historical-stock-data/<company>/query', methods=['POST'])
-def getStockByTimeFrame(company):
-    fromDate = "2018-12-01"
-    toDate = "2019-04-24"
-    tableName = "historical_data_" + company
-    db = mysql.connector.connect(**config)
-    cursor = db.cursor()
-    sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
-          "FROM %s " %(tableName) + \
-          "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" %(fromDate, toDate)
 
-    print(sql)
-    cursor.execute(sql)
-    records = cursor.fetchall()
-    print(records)
-    stockData = {"dates": [record[0] for record in records], "prices": [record[1] for record in records]}
-    cursor.close()
-    db.close()
-    print(stockData)
-    return json.dumps(stockData)
+
 
 
 @app.route('/latest-price/', methods=['GET'])
