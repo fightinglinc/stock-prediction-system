@@ -1,6 +1,5 @@
 (function($) {
   "use strict"; // Start of use strict
-
   // Toggle the side navigation
   $("#sidebarToggle").on('click', function(e) {
     e.preventDefault();
@@ -60,8 +59,8 @@
     var from = document.getElementById('dateFrom').value;
     var to = document.getElementById('dateTo').value;
     $.ajax({
-      'url' : 'http://localhost:5000/historical-stock-data/' + company +"/query",
-      'type' : 'POST',
+      'url' : 'http://localhost:5000/historical-stock-data/' + company + '?' + 'from=' + from + '&to=' + to,
+      'type' : 'GET',
       'success' : function(data) {
         var stockData = JSON.parse(data);
         console.log(typeof stockData[0]);
