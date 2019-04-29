@@ -18,6 +18,8 @@
     }
   });
 
+
+
   // Scroll to top button appear
   $(document).on('scroll', function() {
     var scrollDistance = $(this).scrollTop();
@@ -37,6 +39,8 @@
     event.preventDefault();
   });
 
+
+
   $('#addNewStockButton').click(function() {
   //Send the AJAX call to the server
     console.log("QQQ");
@@ -46,12 +50,34 @@
       'url' : 'http://localhost:5000/historical-stock-data/' + newStock,
       'type' : 'PUT',
       'success' : function(data) {
-        if (data == "success") {
-          alert('request sent!');
-        }
+        // addData(myLineChart, stockData['da']);
       }
     });
   });
+
+  $('#searchStockByPeriodButton').click(function() {
+    var company = document.getElementById('searchByStockName').value;
+    var from = document.getElementById('dateFrom').value;
+    var to = document.getElementById('dateTo').value;
+    $.ajax({
+      'url' : 'http://localhost:5000/historical-stock-data/' + company +"/query",
+      'type' : 'POST',
+      'success' : function(data) {
+        var stockData = JSON.parse(data);
+        console.log(typeof stockData[0]);
+        addData(myLineChart, stockData['dates'], stockData['prices']);
+      }
+    });
+  });
+
+  function addData(chart, dates, prices) {
+    chart.data.labels = dates;
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data = prices;
+    });
+        chart.update();
+  }
+
 
 
 

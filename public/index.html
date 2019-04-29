@@ -135,6 +135,34 @@
           <li class="breadcrumb-item active">Overview</li>
         </ol>
 
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fas fa-chart-area"></i>
+            Time Frame</div>
+          <div class="card-body">
+            <form action="" id="searchByCompany" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+              <label for="from">Stock Name</label>
+              <input type="text" id="searchByStockName" class="form-control" placeholder="stock name" aria-label="Search" aria-describedby="basic-addon2">
+            </form>
+
+            <form action="" id="searchDateFrom" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+              <label for="from">From</label>
+              <input type="text" id="dateFrom" class="form-control" placeholder="YYYY-MM-DD" aria-label="Search" aria-describedby="basic-addon2">
+            </form>
+
+            <form action="" id="SearchDateTo" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+              <label for="to">To</label>
+              <input type="text" id="dateTo"class="form-control" placeholder="YYYY-MM-DD" aria-label="Search" aria-describedby="basic-addon2">
+            </form>
+          </div>
+          <button id="searchStockByPeriodButton" class="btn btn-primary" type="button">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+
+
+
         <!-- Area Chart Example-->
         <div class="card mb-3">
           <div class="card-header">
