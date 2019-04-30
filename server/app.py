@@ -50,7 +50,6 @@ def historicalData(company):
             stockData = {"dates": [record[0] for record in records], "prices": [record[1] for record in records]}
             cursor.close()
             db.close()
-            print(stockData)
             return json.dumps(stockData)
 
     if request.method == 'PUT':
