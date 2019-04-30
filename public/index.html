@@ -151,18 +151,31 @@
                     Time Frame
                 </div>
                 <div class="card-body">
-                    <form action="" id="searchByCompany"
+                    <form id="searchByCompany"
                           class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                        <label for="from">Stock Name</label>
+                        <label>Stock Name</label>
                         <input type="text" id="searchByStockName" class="form-control" placeholder="stock name"
                                aria-label="Search" aria-describedby="basic-addon2">
                     </form>
+                    <hr>
+                    <form id="searchByDate"
+                          class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                      <div class="input-group input-daterange">
+                          <input type="text" class="form-control" id="dateFrom" data-date-format="yyyy-mm-dd">
+                          <div class="input-group-addon">to</div>
+                          <input type="text" class="form-control" id="dateTo" data-date-format="yyyy-mm-dd">
+                      </div>
+                    </form>
 
-                    <form action="" id="searchDateFrom"
+                </div>
+
+                    <!-- <form action="" id="searchDateFrom"
                           class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                         <label for="from">From</label>
-                        <input type="text" id="dateFrom" class="form-control" placeholder="YYYY-MM-DD"
-                               aria-label="Search" aria-describedby="basic-addon2">
+                        <div class='input-group date' id='datetimepicker1'>
+                          <input type="text" id="dateFrom" class="form-control" placeholder="YYYY-MM-DD"
+                                 aria-label="Search" aria-describedby="basic-addon2">
+                        </div>
                     </form>
 
                     <form action="" id="SearchDateTo"
@@ -170,8 +183,7 @@
                         <label for="to">To</label>
                         <input type="text" id="dateTo" class="form-control" placeholder="YYYY-MM-DD" aria-label="Search"
                                aria-describedby="basic-addon2">
-                    </form>
-                </div>
+                    </form> -->
                 <button id="searchStockByPeriodButton" class="btn btn-primary" type="button">
                     <i class="fas fa-search"></i>
                 </button>
@@ -254,8 +266,17 @@
     </div>
 </div>
 
+<!-- datepicker-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
+
 <!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
+<!-- <script src="vendor/jquery/jquery.min.js"></script> -->
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
@@ -272,6 +293,7 @@
 <!-- Demo scripts for this page-->
 <script src="js/demo/datatables-demo.js"></script>
 <script src="js/demo/chart-area-demo.js"></script>
+
 
 </body>
 

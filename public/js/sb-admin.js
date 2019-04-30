@@ -1,5 +1,9 @@
 (function($) {
   "use strict"; // Start of use strict
+  // datepicker
+  $('.input-daterange input').each(function() {
+      $(this).datepicker('clearDates');
+  });
   // Toggle the side navigation
   $("#sidebarToggle").on('click', function(e) {
     e.preventDefault();
@@ -58,6 +62,7 @@
     var company = document.getElementById('searchByStockName').value;
     var from = document.getElementById('dateFrom').value;
     var to = document.getElementById('dateTo').value;
+
     $.ajax({
       'url' : 'http://localhost:5000/historical-stock-data/' + company + '?' + 'from=' + from + '&to=' + to,
       'type' : 'GET',
