@@ -75,6 +75,8 @@
   });
 
   function addData(chart, dates, prices) {
+    chart.data.labels = [];
+    chart.data.datasets.data = [];
     chart.data.labels = dates;
     chart.data.datasets.forEach((dataset) => {
         dataset.data = prices;
