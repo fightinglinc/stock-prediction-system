@@ -58,9 +58,6 @@ def historicalData(company):
         return "sucess"
 
 
-
-
-
 @app.route('/latest-price/', methods=['GET'])
 def get_latest_price():
     if request.method == 'GET':
@@ -108,6 +105,7 @@ def get_avg_price(company):
 
 @app.route('/low-price/<company>', methods=['GET'])
 def get_lowest_price(company):
+    print(company)
     if request.method == 'GET':
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
@@ -121,20 +119,25 @@ def get_lowest_price(company):
         return json.dumps(records)
 
 
-# @app.route('/list-company/<company>', methods=['GET'])
-# def get__price(company):
-#     if request.method == 'GET':
-#         tableName = "historical_data_" + company
-#         db = mysql.connector.connect(**config)
-#         cursor = db.cursor()
-#         sql = "SELECT name, MIN(close) AS lowest_price " \
-#               "FROM " + tableName + " WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(time)"
-#         cursor.execute(sql)
-#         records = cursor.fetchall()
-#         cursor.close()
-#         db.close()
-#         return json.dumps(records)
+@app.route('/list-company/<company>', methods=['GET'])
+def get_company(company):
+    company = str(repr(company.split(','))).replace('[', '').replace(']', '')
+    if request.method == 'GET':
+        db = mysql.connector.connect(**config)
+        cursor = db.cursor()
+        sql = "SELECT sc.id, sc.name, sc.cmp_name, AVG(sd.close) " \
+              "FROM StockData AS sd, stock_company AS sc " \
+              "WHERE sc.name IN " + "(" + company + ")" \
+              "AND sc.name = sd.name " \
+              "AND DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(sd.occurred_at) " \
+              "GROUP BY sc.name"
+        cursor.execute(sql)
+        records = cursor.fetchall()
+        cursor.close()
+        db.close()
+        return json.dumps(records)
 
 
 if __name__ == '__main__':
+    # get_company('FB')
     app.run(debug=True)
