@@ -72,8 +72,11 @@ def get_latest_price():
         records = cursor.fetchall()
         cursor.close()
         db.close()
-        # return jsonify({'price': records})
-        return json.dumps(records)
+        items = []
+        for i in range(len(records)):
+            items.append(dict(name=records[i][0], time=records[i][1], price=records[i][2]))
+        items = dict(data=items)
+        return json.dumps(items)
 
 
 @app.route('/high-price/<company>', methods=['GET'])
