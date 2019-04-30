@@ -85,13 +85,15 @@ def get_highest_price(company):
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT name, DATE_FORMAT(NOW(), '%Y-%m-%d') AS time, MAX(close) AS highest_price " \
+        sql = "SELECT name, DATE_FORMAT(time, '%Y-%m-%d') AS time, MAX(close) AS highest_price " \
               "FROM " + tableName + " WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= DATE(time)"
         cursor.execute(sql)
         records = cursor.fetchall()
         cursor.close()
         db.close()
-        return json.dumps(records)
+        items = [{'name': records[0][0], 'time': records[0][1], 'price': records[0][2]}]
+        items = dict(data=items)
+        return json.dumps(items)
 
 
 @app.route('/avg-price/<company>', methods=['GET'])
@@ -106,7 +108,9 @@ def get_avg_price(company):
         records = cursor.fetchall()
         cursor.close()
         db.close()
-        return json.dumps(records)
+        items = [{'name': records[0][0], 'price': records[0][1]}]
+        items = dict(data=items)
+        return json.dumps(items)
 
 
 @app.route('/low-price/<company>', methods=['GET'])
@@ -122,7 +126,9 @@ def get_lowest_price(company):
         records = cursor.fetchall()
         cursor.close()
         db.close()
-        return json.dumps(records)
+        items = [{'name': records[0][0], 'price': records[0][1]}]
+        items = dict(data=items)
+        return json.dumps(items)
 
 
 @app.route('/list-company/<company>', methods=['GET'])
