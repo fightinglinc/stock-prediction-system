@@ -1,5 +1,6 @@
 import os, sys
 from flask import Flask, render_template, jsonify, send_from_directory, request
+from flask_cors import *
 import time
 import json
 from datetime import *
@@ -10,6 +11,7 @@ curPath = os.path.abspath(os.path.dirname(__file__))
 
 base_dir = os.path.abspath('../public')
 app = Flask(__name__, template_folder=base_dir, static_folder=base_dir, static_url_path="")
+CORS(app, supports_credentials=True)
 config = {
     'user': 'Arabella',
     'password': '12345678',
@@ -70,6 +72,7 @@ def get_latest_price():
         records = cursor.fetchall()
         cursor.close()
         db.close()
+        # return jsonify({'price': records})
         return json.dumps(records)
 
 
@@ -121,7 +124,7 @@ def get_lowest_price(company):
 
 @app.route('/list-company/<company>', methods=['GET'])
 def get_company(company):
-    company = str(repr(company.split(','))).replace('[', '').replace(']', '')
+    company = str(repr(company.split(','))).replace('[', '').replace(']', '').replace(' ', '')
     if request.method == 'GET':
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
@@ -139,5 +142,4 @@ def get_company(company):
 
 
 if __name__ == '__main__':
-    # get_company('FB')
     app.run(debug=True)
