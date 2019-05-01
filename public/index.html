@@ -81,20 +81,24 @@
                 <div class="card-body">
                     <form id="searchByCompany"
                           class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                        <label>Stock Name</label>
-                        <input type="text" id="searchByStockName" class="form-control" placeholder="stock name"
-                               aria-label="Search" aria-describedby="basic-addon2">
+                        Stock Name:&nbsp;<input type="text" id="searchByStockName" class="form-control"
+                                                placeholder="stock name"
+                                                aria-label="Search" aria-describedby="basic-addon2">
                     </form>
-                    <hr>
                     <form id="searchByDate"
                           class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                         <div class="input-group input-daterange">
-                            <input type="text" class="form-control" id="dateFrom" data-date-format="yyyy-mm-dd">
-                            <div class="input-group-addon">to</div>
-                            <input type="text" class="form-control" id="dateTo" data-date-format="yyyy-mm-dd">
+                            Start Date: &nbsp;<input type="text" class="form-control" id="dateFrom"
+                                                     data-date-format="yyyy-mm-dd">
+                            <div class="input-group-addon"></div>
+                            &nbsp;
+                            End Date: &nbsp;<input type="text" class="form-control" id="dateTo"
+                                                   data-date-format="yyyy-mm-dd">
                         </div>
                     </form>
-
+                    <button id="searchStockByPeriodButton" class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
 
                 <!-- <form action="" id="searchDateFrom"
@@ -112,9 +116,7 @@
                     <input type="text" id="dateTo" class="form-control" placeholder="YYYY-MM-DD" aria-label="Search"
                            aria-describedby="basic-addon2">
                 </form> -->
-                <button id="searchStockByPeriodButton" class="btn btn-primary" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
+
             </div>
 
 
