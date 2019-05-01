@@ -52,8 +52,13 @@
     $.ajax({
       'url' : 'http://localhost:5000/historical-stock-data/' + newStock,
       'type' : 'PUT',
-      'success' : function(data) {
-        // addData(myLineChart, stockData['da']);
+      'beforeSend': function(){
+        $("#loader").show();
+       },
+      'success': function(data) {
+      },
+      'complete': function() {
+        $("#loader").hide();
       }
     });
   });

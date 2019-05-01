@@ -20,7 +20,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBackgroundColor: "rgba(2,117,216,1)",
       pointHitRadius: 1,
       pointBorderWidth: 1,
-      data: [],
+      data: []
     }],
   },
   options: {
