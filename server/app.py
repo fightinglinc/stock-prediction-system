@@ -86,8 +86,14 @@ def get_highest_price(company):
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT name, DATE_FORMAT(time, '%Y-%m-%d') AS time, MAX(close) AS highest_price " \
-              "FROM " + tableName + " WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= DATE(time)"
+        sql = "SELECT t.name, DATE_FORMAT(t.time, '%Y-%m-%d') AS time, t.close " \
+              "FROM " + tableName + " t " \
+              "JOIN " \
+              "(SELECT Name, MAX(close) maxVal " \
+              "FROM " + tableName + \
+              " WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) < DATE(time) " \
+              "GROUP BY Name)" + \
+              "t2 ON t.close = t2.maxVal AND t.name = t2.name"
         cursor.execute(sql)
         records = cursor.fetchall()
         cursor.close()
@@ -120,8 +126,14 @@ def get_lowest_price(company):
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT name, DATE_FORMAT(time, '%Y-%m-%d') AS time, MIN(close) AS lowest_price " \
-              "FROM " + tableName + " WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(time)"
+        sql = "SELECT t.name, DATE_FORMAT(t.time, '%Y-%m-%d') AS time, t.close " \
+              "FROM " + tableName + " t " \
+              "JOIN " \
+              "(SELECT Name, MIN(close) minVal " \
+              "FROM " + tableName + \
+              " WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(time) " \
+              "GROUP BY Name)" + \
+              "t2 ON t.close = t2.minVal AND t.name = t2.name"
         cursor.execute(sql)
         records = cursor.fetchall()
         cursor.close()
