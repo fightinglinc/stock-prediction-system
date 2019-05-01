@@ -1,12 +1,11 @@
-import os, sys
-from flask import Flask, render_template, jsonify, send_from_directory, request
+import os
+from flask import Flask, render_template, request
 from flask_cors import *
-import time
-import json
-from datetime import *
 import mysql.connector
 import json
 import operations
+import task
+
 curPath = os.path.abspath(os.path.dirname(__file__))
 
 base_dir = os.path.abspath('../public')
@@ -45,8 +44,8 @@ def historicalData(company):
             db = mysql.connector.connect(**config)
             cursor = db.cursor()
             sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
-                  "FROM %s " %(tableName) + \
-                  "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" %(startDate, endDate)
+                  "FROM %s " % (tableName) + \
+                  "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" % (startDate, endDate)
             cursor.execute(sql)
             records = cursor.fetchall()
             stockData = {"dates": [record[0] for record in records], "prices": [record[1] for record in records]}
@@ -62,10 +61,11 @@ def historicalData(company):
 
 @app.route('/latest-price/', methods=['GET'])
 def get_latest_price():
+    # task.timed_task()
     if request.method == 'GET':
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT sc.cmp_name, DATE_FORMAT(lp.time, '%Y-%m-%d'), lp.price " \
+        sql = "SELECT sc.cmp_name, DATE_FORMAT(lp.time, '%Y-%m-%d'), lp.price, lp.volume " \
               "FROM latest_price as lp, stock_company as sc " \
               "WHERE sc.name = lp.name"
         cursor.execute(sql)
@@ -74,7 +74,8 @@ def get_latest_price():
         db.close()
         items = []
         for i in range(len(records)):
-            items.append(dict(name=records[i][0], time=records[i][1], price=records[i][2]))
+            items.append(dict(name=records[i][0], time=records[i][1],
+                              price=records[i][2], volume=records[i][3]))
         items = dict(data=items)
         return json.dumps(items)
 
@@ -102,7 +103,7 @@ def get_avg_price(company):
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT name,  avg(close) as avg_price " \
+        sql = "SELECT name, avg(close) as avg_price " \
               "FROM " + tableName + " WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(time)"
         cursor.execute(sql)
         records = cursor.fetchall()
@@ -115,18 +116,17 @@ def get_avg_price(company):
 
 @app.route('/low-price/<company>', methods=['GET'])
 def get_lowest_price(company):
-    print(company)
     if request.method == 'GET':
         tableName = "historical_data_" + company
         db = mysql.connector.connect(**config)
         cursor = db.cursor()
-        sql = "SELECT name, MIN(close) AS lowest_price " \
+        sql = "SELECT name, DATE_FORMAT(time, '%Y-%m-%d') AS time, MIN(close) AS lowest_price " \
               "FROM " + tableName + " WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(time)"
         cursor.execute(sql)
         records = cursor.fetchall()
         cursor.close()
         db.close()
-        items = [{'name': records[0][0], 'price': records[0][1]}]
+        items = [{'name': records[0][0], 'time': records[0][1], 'price': records[0][2]}]
         items = dict(data=items)
         return json.dumps(items)
 

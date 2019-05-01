@@ -105,6 +105,7 @@
                                 <th>Company Name</th>
                                 <th>Time</th>
                                 <th>Price</th>
+                                <th>Volume</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -121,8 +122,8 @@
         <div class="container-fluid">
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fas fa-chart-area"></i>
-                    Query For Any Company
+                    <i class="fas fa-table"></i>
+                    Query Highest Stock Price
                 </div>
                 <div class="card-body">
                     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -140,32 +141,12 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="highPrice" width="50%" cellspacing="0">
+                        <table class="table table-bordered" id="highPrice" width="60%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Time</th>
                                 <th>Highest Stock Price (ten days)</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <table class="table table-bordered" id="avgPrice" width="50%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Average Stock Price (one year)</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <table class="table table-bordered" id="lowPrice" width="50%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Lowest Stock Price (one year)</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -179,21 +160,98 @@
         <div class="container-fluid">
             <div class="card mb-3">
                 <div class="card-header">
-                    <i class="fas fa-chart-area"></i>
+                    <i class="fas fa-table"></i>
+                    Query Average Stock Price
+                </div>
+                <div class="card-body">
+                    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                        <div class="input-group">
+                            <input id="searchAnyCompany2" type="text" class="form-control"
+                                   placeholder="Search for..." aria-label="Search"
+                                   aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button id="searchButton2" class="btn btn-primary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="avgPrice" width="60%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Average Stock Price (one year)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Query For Lowest Stock Price
+                </div>
+                <div class="card-body">
+                    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+                        <div class="input-group">
+                            <input id="searchAnyCompany3" type="text" class="form-control"
+                                   placeholder="Search for..." aria-label="Search"
+                                   aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button id="searchButton3" class="btn btn-primary" type="button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="lowPrice" width="60%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Time</th>
+                                <th>Lowest Stock Price (one year)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- list company-->
+        <div class="container-fluid">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
                     List Company
                 </div>
                 <div class="card-body">
                     <select class="selectpicker" id="selectCompany" name="state" title="Choose one company...">
-                        <option value="GOOG">Google</option>
-                        <option value="WMT">Walmart</option>
-                        <option value="MSFT">Microsoft</option>
-                        <option value="IBM">IBM</option>
                         <option value="AMZN">Amazon</option>
                         <option value="CSCO">Cisco</option>
-                        <option value="ORCL">Oracle</option>
                         <option value="EBAY">Ebay</option>
-                        <option value="JPM">JPMorgan</option>
                         <option value="FB">Facebook</option>
+                        <option value="GOOG">Google</option>
+                        <option value="IBM">IBM</option>
+                        <option value="JPM">JPMorgan</option>
+                        <option value="MSFT">Microsoft</option>
+                        <option value="ORCL">Oracle</option>
+                        <option value="WMT">Walmart</option>
                     </select>
                 </div>
                 <div class="card-body">
