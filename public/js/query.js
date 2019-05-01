@@ -62,6 +62,27 @@ $(document).ready(function () {
             ],
 
         });
+
+    });
+
+    $('#selectCompany').change(function () {
+        let company = $('#selectCompany').val();
+
+        $('#listCompany').dataTable({
+            "ajax": 'http://localhost:5000/list-company/' + company,
+            "processing": true,
+            "lengthChange": false,
+            "info": false,
+            "searching": false,
+            "paging": false,
+            "bDestroy": true,
+            columns: [
+                {data: 'id'},
+                {data: 'name'},
+                {data: 'price'}
+            ],
+
+        });
     });
 });
 

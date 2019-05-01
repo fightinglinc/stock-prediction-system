@@ -19,6 +19,9 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin.css" rel="stylesheet">
+    <!-- bootstrap select-->
+    <link rel="stylesheet" href="css/bootstrap-select.min.css">
+
 
 </head>
 
@@ -99,7 +102,7 @@
                         <table class="table table-bordered" id="latestPrice" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Company Name</th>
                                 <th>Time</th>
                                 <th>Price</th>
                             </tr>
@@ -173,6 +176,44 @@
             </div>
         </div>
 
+        <div class="container-fluid">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-chart-area"></i>
+                    List Company
+                </div>
+                <div class="card-body">
+                    <select class="selectpicker" id="selectCompany" name="state" title="Choose one company...">
+                        <option value="GOOG">Google</option>
+                        <option value="WMT">Walmart</option>
+                        <option value="MSFT">Microsoft</option>
+                        <option value="IBM">IBM</option>
+                        <option value="AMZN">Amazon</option>
+                        <option value="CSCO">Cisco</option>
+                        <option value="ORCL">Oracle</option>
+                        <option value="EBAY">Ebay</option>
+                        <option value="JPM">JPMorgan</option>
+                        <option value="FB">Facebook</option>
+                    </select>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="listCompany" width="50%" cellspacing="0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Average Stock Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Sticky Footer -->
         <footer class="sticky-footer">
@@ -228,10 +269,13 @@
 
 <!-- Custom scripts for all pages-->
 <!--<script src="js/sb-admin.js"></script>-->
+<!-- scripts for this pages-->
 <script src="js/query.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
 
 <!-- Demo scripts for this page-->
 <script src="js/demo/datatables-demo.js"></script>
+
 
 </body>
 
