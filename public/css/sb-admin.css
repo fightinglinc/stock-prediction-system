@@ -10538,6 +10538,9 @@ body {
 
 @media (min-width: 768px) {
   .sidebar {
+    position: sticky;
+    top: 0;
+    height: calc(100vh);
     width: 225px !important;
   }
   .sidebar .nav-item .nav-link {

@@ -33,9 +33,9 @@ $(document).ready(function () {
                 {data: 'price'}
             ],
         }).on('xhr.dt', function (e, settings, json, xhr) {
-            console.log(xhr);
             if (xhr.status === 0) {
-                alert("Not exist!");
+                swal("Not exist", "", "warning");
+                $('#highPrice tbody').html('');
             }
         });
     });
@@ -58,9 +58,9 @@ $(document).ready(function () {
                 {data: 'price'}
             ],
         }).on('xhr.dt', function (e, settings, json, xhr) {
-            console.log(xhr);
             if (xhr.status === 0) {
-                alert("Not exist!");
+                swal("Not exist", "", "warning");
+                $('#avgPrice tbody').html('');
             }
         });
     });
@@ -84,9 +84,9 @@ $(document).ready(function () {
                 {data: 'price'}
             ],
         }).on('xhr.dt', function (e, settings, json, xhr) {
-            console.log(xhr);
             if (xhr.status === 0) {
-                alert("Not exist!");
+                swal("Not exist", "", "warning");
+                $('#lowPrice tbody').html('');
             }
         });
     });
