@@ -34,7 +34,7 @@ $(document).ready(function () {
             ],
         }).on('xhr.dt', function (e, settings, json, xhr) {
             if (xhr.status === 0) {
-                swal("Not exist", "", "warning");
+                swal("Not exist", "Please enter another stock", "warning");
                 $('#highPrice tbody').html('');
             }
         });
@@ -59,7 +59,7 @@ $(document).ready(function () {
             ],
         }).on('xhr.dt', function (e, settings, json, xhr) {
             if (xhr.status === 0) {
-                swal("Not exist", "", "warning");
+                swal("Not exist", "Please enter another stock", "warning");
                 $('#avgPrice tbody').html('');
             }
         });
@@ -126,6 +126,5 @@ function getDate() {
     if (strDate >= 0 && strDate <= 9) {
         strDate = "0" + strDate;
     }
-    let nowDate = date.getFullYear() + seperator + nowMonth + seperator + strDate;
-    return nowDate;
+    return date.getFullYear() + seperator + nowMonth + seperator + strDate;
 }
