@@ -1,0 +1,25 @@
+This is the query stock API
+  Call this api to query the latest stock price of all companies in the database
+    ---
+  tags:
+  - Query Stock Data API
+  responses:
+    200:
+      description: return name, time, price and volume
+      examples:
+        {
+          "data": [
+          {
+            "name": "Google",
+            "time": "2019-05-01",
+            "price": 1168.08,
+            "volume": 2642980
+          },
+          {
+            "name": "Facebook",
+            "time": "2019-05-01",
+            "price": 193.03,
+            "volume": 15996600
+          }
+          ]
+        }

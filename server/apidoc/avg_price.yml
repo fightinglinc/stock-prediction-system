@@ -1,0 +1,23 @@
+This is the query stock API
+  Call this api to query the average stock price of any company in the latest one year
+    ---
+  tags:
+  - Query Stock Data API
+  parameters:
+  - name: company
+    in: path
+    type: string
+    required: true
+    description: The stock name for the company
+  responses:
+    200:
+      description: return name, price
+      examples:
+        {
+          "data": [
+          {
+            "name": "CSCO",
+            "price": 46.82052207854857
+          }
+          ]
+        }

@@ -1,0 +1,16 @@
+  This is the add stock API
+  Call this api to add new stock
+    ---
+  tags:
+  - Add History Stock Data API
+  parameters:
+  - name: company
+    in: path
+    type: string
+    required: true
+    description: The stock name for the company
+  responses:
+    200:
+      description: Will return success after add successfully
+      examples:
+        [sucess]

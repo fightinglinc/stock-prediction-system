@@ -1,0 +1,26 @@
+  This is the query API
+  Call this api passing a stock name
+    ---
+  tags:
+  - Get History Stock Data API
+  parameters:
+  - name: company
+    in: path
+    type: string
+    required: true
+    description: The stock name for the company
+  responses:
+    200:
+      description: return the stock data of company (array format)
+      examples:
+        [
+          [
+            1,
+            "2019-04-30",
+            1185,
+            1192.81,
+            1175,
+            1188.48,
+            6194500
+          ]
+        ]

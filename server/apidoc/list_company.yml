@@ -1,0 +1,25 @@
+This is the query stock API
+  Call this api to list the ids of companies along with their name who have the average stock price
+  lesser than the lowest of any of the Selected Company in the latest one year
+    ---
+  tags:
+  - Query Stock Data API
+  parameters:
+  - name: company
+    in: path
+    type: string
+    required: true
+    description: The stock name for the company
+  responses:
+    200:
+      description: return id, name, price
+      examples:
+        {
+          "data": [
+          {
+            "id": 8,
+            "name": "Ebay",
+            "price": 35.741365348112865
+          }
+          ]
+        }

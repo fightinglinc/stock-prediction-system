@@ -7,6 +7,7 @@ import operations
 import task
 import datetime
 import indicators
+from flasgger import swag_from, Swagger
 
 curPath = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,9 +21,7 @@ config = {
     'database': '568Project',
     'port': 3306
 }
-
-
-
+swagger = Swagger(app)
 
 
 @app.route('/')
@@ -31,6 +30,8 @@ def index():
 
 
 @app.route('/historical-stock-data/<company>', methods=['GET', 'PUT'])
+@swag_from('apidoc/historical_data_get.yml', methods=['GET'])
+@swag_from('apidoc/historical_data_put.yml', methods=['PUT'])
 def historicalData(company):
     if request.method == 'GET':
         tableName = "historical_data_" + company
@@ -81,7 +82,6 @@ def historicalData(company):
             movingAvgShort = movingAvgShort[-daysDiff:]
             movingAvgLong = movingAvgLong[-daysDiff:]
 
-
             stockData = {"dates": dates,
                          "prices": prices,
                          "macd": macd,
@@ -98,6 +98,7 @@ def historicalData(company):
 
 
 @app.route('/latest-price/', methods=['GET'])
+@swag_from('apidoc/latest_price.yml', methods=['GET'])
 def get_latest_price():
     # task.timed_task()
     if request.method == 'GET':
@@ -119,6 +120,7 @@ def get_latest_price():
 
 
 @app.route('/high-price/<company>', methods=['GET'])
+@swag_from('apidoc/high_price.yml', methods=['GET'])
 def get_highest_price(company):
     if request.method == 'GET':
         tableName = "historical_data_" + company
@@ -126,9 +128,9 @@ def get_highest_price(company):
         cursor = db.cursor()
         sql = "SELECT t.name, DATE_FORMAT(t.time, '%Y-%m-%d') AS time, t.close " \
               "FROM " + tableName + " t " \
-              "JOIN " \
-              "(SELECT Name, MAX(close) maxVal " \
-              "FROM " + tableName + \
+                                    "JOIN " \
+                                    "(SELECT Name, MAX(close) maxVal " \
+                                    "FROM " + tableName + \
               " WHERE DATE_SUB(CURDATE(), INTERVAL 10 DAY) < DATE(time) " \
               "GROUP BY Name)" + \
               "t2 ON t.close = t2.maxVal AND t.name = t2.name"
@@ -142,6 +144,7 @@ def get_highest_price(company):
 
 
 @app.route('/avg-price/<company>', methods=['GET'])
+@swag_from('apidoc/avg_price.yml', methods=['GET'])
 def get_avg_price(company):
     if request.method == 'GET':
         tableName = "historical_data_" + company
@@ -159,6 +162,7 @@ def get_avg_price(company):
 
 
 @app.route('/low-price/<company>', methods=['GET'])
+@swag_from('apidoc/low_price.yml', methods=['GET'])
 def get_lowest_price(company):
     if request.method == 'GET':
         tableName = "historical_data_" + company
@@ -166,9 +170,9 @@ def get_lowest_price(company):
         cursor = db.cursor()
         sql = "SELECT t.name, DATE_FORMAT(t.time, '%Y-%m-%d') AS time, t.close " \
               "FROM " + tableName + " t " \
-              "JOIN " \
-              "(SELECT Name, MIN(close) minVal " \
-              "FROM " + tableName + \
+                                    "JOIN " \
+                                    "(SELECT Name, MIN(close) minVal " \
+                                    "FROM " + tableName + \
               " WHERE DATE_SUB(CURDATE(), INTERVAL 1 YEAR) < DATE(time) " \
               "GROUP BY Name)" + \
               "t2 ON t.close = t2.minVal AND t.name = t2.name"
@@ -182,6 +186,7 @@ def get_lowest_price(company):
 
 
 @app.route('/list-company/<company>', methods=['GET'])
+@swag_from('apidoc/list_company.yml', methods=['GET'])
 def get_company(company):
     if request.method == 'GET':
         db = mysql.connector.connect(**config)
@@ -202,10 +207,6 @@ def get_company(company):
             items.append(dict(id=records[i][0], name=records[i][1], price=records[i][2]))
         items = dict(data=items)
         return json.dumps(items)
-
-
-
-
 
 
 if __name__ == '__main__':

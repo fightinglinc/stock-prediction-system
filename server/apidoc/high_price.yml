@@ -1,0 +1,24 @@
+This is the query stock API
+  Call this api to query the hightest stock price of any company in the last ten days
+    ---
+  tags:
+  - Query Stock Data API
+  parameters:
+  - name: company
+    in: path
+    type: string
+    required: true
+    description: The stock name for the company
+  responses:
+    200:
+      description: return name, time, price
+      examples:
+        {
+          "data": [
+          {
+            "name": "CSCO",
+            "time": "2019-04-24",
+            "price": 56.88
+          }
+          ]
+        }
