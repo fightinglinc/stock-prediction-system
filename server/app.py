@@ -73,7 +73,7 @@ def historicalData(company):
             prices = [record[1] for record in records]
             prices.reverse()
             macd = indicators.macd(prices)
-            rsi = indicators.rsi(prices)
+            rsi = indicators.rsiFunc(prices)
             movingAvgShort = indicators.moving_avg(prices, period=5)
             movingAvgLong = indicators.moving_avg(prices, period=50)
 

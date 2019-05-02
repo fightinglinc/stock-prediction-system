@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 
 
 
@@ -25,26 +25,35 @@ def macd(data, period_long=26, period_short=12, period_signal=9, column='close')
     data = data.drop(remove_cols, axis=1)
     return data['macd_val'].values.tolist()
 
-def rsi(data, periods=14, close_col='close'):
-    data = pd.DataFrame(data,columns=['close'])
-    data['rsi_u'] = 0.
-    data['rsi_d'] = 0.
-    data['rsi'] = 0.
+def rsiFunc(prices, n=14):
+    prices = np.array(prices)
+    deltas = np.diff(prices)
+    seed = deltas[:n+1]
+    up = seed[seed>=0].sum()/n
+    down = -seed[seed<0].sum()/n
+    rs = up/down
+    rsi = np.zeros_like(prices)
+    rsi[:n] = 100. - 100./(1.+rs)
 
-    for index,row in data.iterrows():
-        if index >= periods:
+    for i in range(n, len(prices)):
+        delta = deltas[i-1] # cause the diff is 1 shorter
 
-            prev_close = data.at[index-periods, close_col]
-            if prev_close < row[close_col]:
-                data.set_value(index, 'rsi_u', float(row[close_col]) - float(prev_close))
-            elif prev_close > row[close_col]:
-                data.set_value(index, 'rsi_d', float(prev_close) - float(row[close_col]))
+        if delta>0:
+            upval = delta
+            downval = 0.
+        else:
+            upval = 0.
+            downval = -delta
 
-    data['rsi'] = data['rsi_u'].ewm(ignore_na=False, min_periods=0, com=periods, adjust=True).mean() / (data['rsi_u'].ewm(ignore_na=False, min_periods=0, com=periods, adjust=True).mean() + data['rsi_d'].ewm(ignore_na=False, min_periods=0, com=periods, adjust=True).mean())
+        up = (up*(n-1) + upval)/n
+        down = (down*(n-1) + downval)/n
 
-    data = data.drop(['rsi_u', 'rsi_d'], axis=1)
+        rs = up/down
+        rsi[i] = 100. - 100./(1.+rs)
+    rsi[:n] = None
 
-    return data['rsi'].values.tolist()
+    return rsi.tolist()
+
 
 
 

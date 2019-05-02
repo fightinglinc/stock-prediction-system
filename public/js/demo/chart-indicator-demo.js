@@ -9,16 +9,17 @@ var myIndiChart = new Chart(ctx, {
   data: {
     labels: [],
     datasets: [{
-      label: "masd",
-      borderColor: "rgb(0,255,0,1)",
-      borderWidth: 1,
+      label: "macd",
+      borderColor: "rgb(255,0,0,1)",
+      borderWidth: 2,
       pointRadius: 0,
       fill: false,
       data: []
     },{
+      type:'line',
       label: "rsi",
-      borderColor: "rgb(255,180,0,1)",
-      borderWidth: 1,
+      borderColor: "rgb(0,0,255,1)",
+      borderWidth: 2,
       pointRadius: 0,
       fill: false,
       data: []
