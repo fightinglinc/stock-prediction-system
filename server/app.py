@@ -8,7 +8,7 @@ import datetime
 import operations
 import indicators
 import task
-from predict import ANN, SVM
+from predict import ANN, SVM, Bayes
 
 
 curPath = os.path.abspath(os.path.dirname(__file__))
@@ -218,9 +218,12 @@ def predict(company):
         ann_price = str(ann_price[0]).replace('[', '').replace(']', '')
         svm_price = SVM.get_next_day_price(company)
         svm_price = str(svm_price[0]).replace('[', '').replace(']', '')
+        bayes_price = Bayes.get_next_day_price(company)
+        bayes_price = str(bayes_price[0]).replace('[', '').replace(']', '')
         items = []
         items.append(dict(algorithm='ANN', price=ann_price))
         items.append(dict(algorithm='SVM', price=svm_price))
+        items.append(dict(algorithm='Bayes', price=bayes_price))
         items = dict(data=items)
         return json.dumps(items)
 
