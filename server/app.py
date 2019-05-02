@@ -5,6 +5,8 @@ import mysql.connector
 import json
 import operations
 import task
+import datetime
+import indicators
 
 curPath = os.path.abspath(os.path.dirname(__file__))
 
@@ -18,6 +20,9 @@ config = {
     'database': '568Project',
     'port': 3306
 }
+
+
+
 
 
 @app.route('/')
@@ -41,16 +46,49 @@ def historicalData(company):
         else:
             startDate = request.args.get('from')
             endDate = request.args.get('to')
+            start = datetime.datetime.strptime(startDate, '%Y-%m-%d')
+            end = datetime.datetime.strptime(endDate, '%Y-%m-%d')
+            timeDiff = end - start
+            daysDiff = timeDiff.days
+            numOfRows = daysDiff + 100
             db = mysql.connector.connect(**config)
             cursor = db.cursor()
+
             sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
                   "FROM %s " % (tableName) + \
-                  "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" % (startDate, endDate)
+                  "LIMIT %s" % (numOfRows)
+
+            # sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
+            #       "FROM %s " % (tableName) + \
+            #       "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" % (startDate, endDate)
             cursor.execute(sql)
             records = cursor.fetchall()
-            stockData = {"dates": [record[0] for record in records], "prices": [record[1] for record in records]}
             cursor.close()
             db.close()
+            dates = [record[0] for record in records]
+            dates.reverse()
+            prices = [record[1] for record in records]
+            prices.reverse()
+            macd = indicators.macd(prices)
+            rsi = indicators.rsi(prices)
+            movingAvgShort = indicators.moving_avg(prices, period=5)
+            movingAvgLong = indicators.moving_avg(prices, period=50)
+
+            dates = dates[-daysDiff:]
+            prices = prices[-daysDiff:]
+            macd = macd[-daysDiff:]
+            rsi = rsi[-daysDiff:]
+            movingAvgShort = movingAvgShort[-daysDiff:]
+            movingAvgLong = movingAvgLong[-daysDiff:]
+
+
+            stockData = {"dates": dates,
+                         "prices": prices,
+                         "macd": macd,
+                         "rsi": rsi,
+                         "movingAvgShort": movingAvgShort,
+                         "movingAvgLong": movingAvgLong}
+
             return json.dumps(stockData)
 
     if request.method == 'PUT':
@@ -164,6 +202,10 @@ def get_company(company):
             items.append(dict(id=records[i][0], name=records[i][1], price=records[i][2]))
         items = dict(data=items)
         return json.dumps(items)
+
+
+
+
 
 
 if __name__ == '__main__':

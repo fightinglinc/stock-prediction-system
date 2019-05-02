@@ -73,22 +73,28 @@
       'type' : 'GET',
       'success' : function(data) {
         var stockData = JSON.parse(data);
-        console.log(typeof stockData[0]);
-        addData(myLineChart, stockData['dates'], stockData['prices']);
+        addDataToPriceChart(myLineChart, stockData['dates'], stockData['prices'], stockData['movingAvgShort'], stockData['movingAvgLong']);
+        addDataToIndicatorChart(myIndiChart, stockData['dates'], stockData['macd'], stockData['rsi']);
+
       }
     });
   });
 
-  function addData(chart, dates, prices) {
-    chart.data.labels = [];
-    chart.data.datasets.data = [];
+  function addDataToPriceChart(chart, dates, prices, movingAvgShort, movingAvgLong) {
     chart.data.labels = dates;
-    chart.data.datasets.forEach((dataset) => {
-        dataset.data = prices;
-    });
-        chart.update();
+    chart.data.datasets[0].data = prices;
+    chart.data.datasets[1].data = movingAvgShort;
+    chart.data.datasets[2].data = movingAvgLong;
+    chart.update();
   }
 
+
+    function addDataToIndicatorChart(chart, dates, macd, rsi) {
+      chart.data.labels = dates;
+      chart.data.datasets[0].data = macd;
+      chart.data.datasets[1].data = rsi;
+      chart.update();
+    }
 
 
 
