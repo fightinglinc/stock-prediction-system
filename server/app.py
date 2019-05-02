@@ -1,13 +1,15 @@
 import os
 from flask import Flask, render_template, request
 from flask_cors import *
+from flasgger import swag_from, Swagger
 import mysql.connector
 import json
-import operations
-import task
 import datetime
+import operations
 import indicators
-from flasgger import swag_from, Swagger
+import task
+from predict import ANN, SVM
+
 
 curPath = os.path.abspath(os.path.dirname(__file__))
 
@@ -205,6 +207,20 @@ def get_company(company):
         items = []
         for i in range(len(records)):
             items.append(dict(id=records[i][0], name=records[i][1], price=records[i][2]))
+        items = dict(data=items)
+        return json.dumps(items)
+
+
+@app.route('/predict/<company>', methods=['GET'])
+def predict(company):
+    if request.method == 'GET':
+        ann_price = ANN.get_next_day_price(company)
+        ann_price = str(ann_price[0]).replace('[', '').replace(']', '')
+        svm_price = SVM.get_next_day_price(company)
+        svm_price = str(svm_price[0]).replace('[', '').replace(']', '')
+        items = []
+        items.append(dict(algorithm='ANN', price=ann_price))
+        items.append(dict(algorithm='SVM', price=svm_price))
         items = dict(data=items)
         return json.dumps(items)
 
