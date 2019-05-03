@@ -20,7 +20,6 @@ def get_raw_data(company_name):
 
 def ema(data, period=0, column='close'):
     data['ema' + str(period)] = data[column].ewm(ignore_na=False, min_periods=period, com=period, adjust=True).mean()
-
     return data
 
 
@@ -39,6 +38,7 @@ def macd(data, period_long=26, period_short=12, period_signal=9, column='close')
                                                     adjust=True).mean()
 
     data = data.drop(remove_cols, axis=1)
+
     return data
 
 
@@ -63,29 +63,39 @@ def rsi(data, periods=14, close_col='close'):
     return data
 
 
-def get_features(pd_raw):
-    data = macd(pd_raw)  # Calculate MACD
-    data = rsi(data)  # Calculate RSI
-    data['moving_50'] = data['close'].rolling(50).mean()  # Calculate Moving Average 50
-    data['moving_100'] = data['close'].rolling(100).mean()  # Calculate Moving Average 100
-    Next = data['close'][100:].copy()
+def get_features(data, is_long_term):
+    # predict next long_term_day
+    long_term_day = 30
+    Next = None
+    if is_long_term is True:
+        data['moving_50'] = data['close'].rolling(50).mean()  # Calculate Moving Average 50
+        data['moving_100'] = data['close'].rolling(100).mean()  # Calculate Moving Average 100
+        Next = data['close'][100 + long_term_day:].copy()
+        data = data[99:-long_term_day][['close', 'moving_50', 'moving_100']].copy()  # Choose 3 columns
+    else:
+        data = macd(data)  # Calculate MACD
+        data = rsi(data)  # Calculate RSI
+        # 25 is to get rid of NaN
+        macd_start = 25
+        # +1 is for next day
+        Next = data['close'][macd_start + 1:].copy()
+        data = data[macd_start:][['close', 'rsi', 'macd_val']].copy()  # Choose 3 columns
     Next = Next.reset_index(drop=True)
-    data = data[99:][['close', 'macd_val', 'rsi', 'moving_50', 'moving_100']].copy()  # Choose 5 columns
     data = data.reset_index(drop=True)
     data['next'] = Next
     return data
 
 
 def get_train_data(data_with_feature):
-    return data_with_feature[:161, :5], data_with_feature[:161, 5]
+    return data_with_feature[:161, :3], data_with_feature[:161, 3]
 
 
 def get_test_data(data_with_feature):
-    return data_with_feature[161:-1, :5], data_with_feature[161:-1, 5]
+    return data_with_feature[161:-1, :3], data_with_feature[161:-1, 3]
 
 
 def get_predict_data(data_with_feature):
-    return data_with_feature[-1, :5].reshape((1, 5))
+    return data_with_feature[-1, :3].reshape((1, 3))
 
 
 def build_SVM_model():
@@ -110,15 +120,14 @@ def predict_SVM_model(clf, predict_data):
     return clf.predict(predict_data)
 
 
-def get_next_day_price(company_name):
+def get_next_day_price(company_name, is_long_term=True):
     pd_raw = get_raw_data(company_name)
-    pd_with_feature = get_features(pd_raw)
+    pd_with_feature = get_features(pd_raw, is_long_term)
     np_data = pd_with_feature.to_numpy()
     np_train, np_target = get_train_data(np_data)
     np_test, np_truth = get_test_data(np_data)
     np_pred = get_predict_data(np_data)
     svm = build_SVM_model()
     train_SVM_model(svm, np_train, np_target)
-    # print(test_SVM_model(svm, np_test, np_truth))
+    print(test_SVM_model(svm, np_test, np_truth))
     return predict_SVM_model(svm, np_pred)
-
