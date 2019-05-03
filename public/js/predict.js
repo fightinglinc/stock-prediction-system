@@ -1,9 +1,11 @@
 $(document).ready(function () {
-    $('#selectCompany').change(function () {
+    $('#selectCompany, #selectTerm').change(function () {
+
         let company = $('#selectCompany').val();
+        let term = $('#selectTerm').val();
 
         $('#predictPrice').dataTable({
-            "ajax": 'http://localhost:5000/predict/' + company,
+            "ajax": 'http://localhost:5000/predict/' + company + '/' + term,
             "processing": true,
             "lengthChange": false,
             "info": false,
@@ -17,7 +19,7 @@ $(document).ready(function () {
         }).on('xhr.dt', function (e, settings, json, xhr) {
             if (xhr.status === 0) {
                 swal("Not exist", "Please select another stock", "warning");
-                $('#lowPrice tbody').html('');
+                $('#predictPrice tbody').html('');
             }
         });
     });

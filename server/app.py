@@ -249,19 +249,22 @@ def get_company(company):
         return json.dumps(items)
 
 
-@app.route('/predict/<company>', methods=['GET'])
-def predict(company):
+@app.route('/predict/<company>/<term>', methods=['GET'])
+def predict(company, term):
+    items = list()
     if request.method == 'GET':
-        ann_price = ANN.get_next_day_price(company)
-        ann_price = str(ann_price[0]).replace('[', '').replace(']', '')
-        svm_price = SVM.get_next_day_price(company)
-        svm_price = str(svm_price[0]).replace('[', '').replace(']', '')
-        bayes_price = Bayes.get_next_day_price(company)
-        bayes_price = str(bayes_price[0]).replace('[', '').replace(']', '')
-        items = []
-        items.append(dict(algorithm='ANN', price=ann_price))
-        items.append(dict(algorithm='SVM', price=svm_price))
-        items.append(dict(algorithm='Bayes', price=bayes_price))
+        if term == 'short':
+            ann_price = ANN.get_next_day_price(company)
+            ann_price = str(ann_price[0]).replace('[', '').replace(']', '')
+            bayes_price = Bayes.get_next_day_price(company)
+            bayes_price = str(bayes_price[0]).replace('[', '').replace(']', '')
+            items.append(dict(algorithm='ANN', price=ann_price))
+            items.append(dict(algorithm='Bayes', price=bayes_price))
+        else:
+            svm_price = SVM.get_next_day_price(company)
+            svm_price = str(svm_price[0]).replace('[', '').replace(']', '')
+            items.append(dict(algorithm='SVM', price=svm_price))
+
         items = dict(data=items)
         return json.dumps(items)
 
