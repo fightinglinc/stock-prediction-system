@@ -3,8 +3,8 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Area Chart Example
-var ctx = document.getElementById("myAreaChart");
-var myLineChart = new Chart(ctx, {
+var ctx = document.getElementById("myRealtimeAreaChart");
+var myRealtimeLineChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: [],
@@ -17,32 +17,14 @@ var myLineChart = new Chart(ctx, {
       pointBorderWidth: 3,
       fill: false,
       data: []
-    },{
-      label: "movingAvgShort",
-      borderColor: "rgb(0,255,0,1)",
-      borderWidth: 1,
-      pointRadius: 0,
-      fill: false,
-      data: []
-    },{
-      label: "movingAvgLong",
-      borderColor: "rgb(255,180,0,1)",
-      borderWidth: 1,
-      pointRadius: 0,
-      fill: false,
-      data: []
-    },
-
-
-
-    ],
+    }],
   },
   options: {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
         time: {
-          unit: 'date'
+          unit: 'hour'
         },
         gridLines: {
           display: false

@@ -61,6 +61,18 @@
         $("#loader").hide();
       }
     });
+    $.ajax({
+      'url' : 'http://localhost:5000/realtime-stock-data/' + newStock,
+      'type' : 'PUT',
+      'beforeSend': function(){
+        $("#loader").show();
+       },
+      'success': function(data) {
+      },
+      'complete': function() {
+        $("#loader").hide();
+      }
+    });
   });
 
   $('#searchStockByPeriodButton').click(function() {
@@ -79,6 +91,28 @@
       }
     });
   });
+
+
+
+
+    $('#searchRealtimeStockButton').click(function() {
+      var company = document.getElementById('searchByRealtimeStockName').value;
+      $.ajax({
+        'url' : 'http://localhost:5000/realtime-stock-data/' + company,
+        'type' : 'GET',
+        'success' : function(data) {
+          var stockData = JSON.parse(data);
+          addDataToRealtimeChart(myRealtimeLineChart, stockData['times'], stockData['prices']);
+        }
+      });
+    });
+
+
+  function addDataToRealtimeChart(chart, times, prices) {
+    chart.data.labels = times;
+    chart.data.datasets[0].data = prices;
+    chart.update();
+  }
 
   function addDataToPriceChart(chart, dates, prices, movingAvgShort, movingAvgLong) {
     chart.data.labels = dates;

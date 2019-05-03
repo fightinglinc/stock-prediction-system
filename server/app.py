@@ -6,6 +6,7 @@ import mysql.connector
 import json
 import datetime
 import operations
+import operations_realtime
 import indicators
 import task
 from predict import ANN, SVM, Bayes
@@ -50,28 +51,29 @@ def historicalData(company):
             startDate = request.args.get('from')
             endDate = request.args.get('to')
             start = datetime.datetime.strptime(startDate, '%Y-%m-%d')
+            print(start)
             end = datetime.datetime.strptime(endDate, '%Y-%m-%d')
-            timeDiff = end - start
-            daysDiff = timeDiff.days
-            numOfRows = daysDiff + 100
+            indStart = start - datetime.timedelta(days=90)
             db = mysql.connector.connect(**config)
             cursor = db.cursor()
 
+            # count number of rows for Start
+            sql = "SELECT COUNT(*) as cnt " + \
+                  "FROM %s " % (tableName) + \
+                  "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" % (start.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'))
+            cursor.execute(sql)
+            daysDiff = cursor.fetchall()[0][0]
+
             sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
                   "FROM %s " % (tableName) + \
-                  "LIMIT %s" % (numOfRows)
-
-            # sql = "SELECT DATE_FORMAT(time, '%Y-%m-%d')  AS time, close " + \
-            #       "FROM %s " % (tableName) + \
-            #       "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" % (startDate, endDate)
+                  "WHERE DATE(time) BETWEEN DATE('%s') AND DATE('%s') order by time asc" % (indStart.strftime('%Y-%m-%d'), end.strftime('%Y-%m-%d'))
             cursor.execute(sql)
             records = cursor.fetchall()
             cursor.close()
             db.close()
+
             dates = [record[0] for record in records]
-            dates.reverse()
             prices = [record[1] for record in records]
-            prices.reverse()
             macd = indicators.macd(prices)
             rsi = indicators.rsiFunc(prices)
             movingAvgShort = indicators.moving_avg(prices, period=5)
@@ -97,6 +99,42 @@ def historicalData(company):
         operations.getDataFromApiAndWriteToDisk(curPath + '/data', company)
         operations.writeToDB(curPath + '/data', company)
         return "sucess"
+
+
+
+@app.route('/realtime-stock-data/<company>', methods=['GET', 'PUT'])
+def realtimeData(company):
+    if request.method == 'GET':
+        tableName = "realtime_data_" + company
+        if len(request.args) == 0:
+            db = mysql.connector.connect(**config)
+            cursor = db.cursor()
+            sql = "SELECT DATE_FORMAT(time, '%H:%i')  AS time, close " + \
+                  "FROM %s " % (tableName) + \
+                  "WHERE DATE(time) = '%s' " % (datetime.datetime.now().strftime("%Y-%m-%d")) + \
+                  "order by time asc"
+            cursor.execute(sql)
+            records = cursor.fetchall()
+            cursor.close()
+            db.close()
+            times = [record[0] for record in records]
+            prices = [record[1] for record in records]
+            stockData = {"times": times,
+                         "prices": prices}
+            print(stockData)
+            return json.dumps(stockData)
+
+    if request.method == 'PUT':
+        operations_realtime.getDataFromApiAndWriteToDisk(curPath + '/data', company)
+        operations_realtime.writeToDB(curPath + '/data', company)
+        return "sucess"
+
+
+
+
+
+
+
 
 
 @app.route('/latest-price/', methods=['GET'])
