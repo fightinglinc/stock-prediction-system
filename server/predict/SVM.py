@@ -120,7 +120,7 @@ def predict_SVM_model(clf, predict_data):
     return clf.predict(predict_data)
 
 
-def get_next_day_price(company_name, is_long_term=True):
+def get_next_day_price(company_name, is_long_term=False):
     pd_raw = get_raw_data(company_name)
     pd_with_feature = get_features(pd_raw, is_long_term)
     np_data = pd_with_feature.to_numpy()
@@ -129,5 +129,5 @@ def get_next_day_price(company_name, is_long_term=True):
     np_pred = get_predict_data(np_data)
     svm = build_SVM_model()
     train_SVM_model(svm, np_train, np_target)
-    print(test_SVM_model(svm, np_test, np_truth))
+    # print(test_SVM_model(svm, np_test, np_truth))
     return predict_SVM_model(svm, np_pred)

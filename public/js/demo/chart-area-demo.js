@@ -18,14 +18,14 @@ var myLineChart = new Chart(ctx, {
       fill: false,
       data: []
     },{
-      label: "movingAvgShort",
+      label: "movingAvg_5",
       borderColor: "rgb(0,255,0,1)",
       borderWidth: 1,
       pointRadius: 0,
       fill: false,
       data: []
     },{
-      label: "movingAvgLong",
+      label: "movingAvg_50",
       borderColor: "rgb(255,180,0,1)",
       borderWidth: 1,
       pointRadius: 0,
@@ -61,8 +61,8 @@ var myLineChart = new Chart(ctx, {
         }
       }],
     },
-    legend: {
-      display: false
-    }
+    // legend: {
+    //   display: false
+    // }
   }
 });
