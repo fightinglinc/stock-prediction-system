@@ -1,3 +1,6 @@
+# written by: Linchen Xie, Kuo-Wei Chung
+# assisted by: Linchen Xie, Kuo-Wei Chung
+# debugged by: All members
 import os
 from flask import Flask, render_template, request
 from flask_cors import *

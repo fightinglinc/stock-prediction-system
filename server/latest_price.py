@@ -1,3 +1,6 @@
+# written by: Linchen Xie
+# assisted by: Linchen Xie
+# debugged by: Linchen Xie
 import requests
 import csv
 import time

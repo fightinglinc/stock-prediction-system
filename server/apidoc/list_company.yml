@@ -1,3 +1,6 @@
+# written by: Linchen Xie
+# assisted by: Linchen Xie
+# debugged by: Linchen Xie
 This is the query stock API
   Call this api to list the ids of companies along with their name who have the average stock price
   lesser than the lowest of any of the Selected Company in the latest one year

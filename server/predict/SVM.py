@@ -1,3 +1,6 @@
+# written by: Lingxuan Gao
+# assisted by: Lingxuan Gao
+# debugged by: Lingxuan Gao, Linchen Xie
 import pandas as pd
 import csv
 import numpy as np

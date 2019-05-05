@@ -1,3 +1,6 @@
+# written by: Linchen Xie
+# assisted by: Linchen Xie
+# debugged by: Linchen Xie
 This is the query stock API
   Call this api to query the latest stock price of all companies in the database
     ---

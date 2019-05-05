@@ -1,3 +1,6 @@
+# written by: Baozhang Ren
+# assisted by: Baozhang Ren
+# debugged by: Baozhang Ren, Kuo-Wei Chung
 import pandas as pd
 import numpy as np
 
