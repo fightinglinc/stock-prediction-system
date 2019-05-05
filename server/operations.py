@@ -1,6 +1,6 @@
-# written by: Linchen Xie
-# assisted by: Linchen Xie
-# debugged by: Linchen Xie
+# written by: Kuo-Wei Chung
+# assisted by: Kuo-Wei Chung
+# debugged by: Kuo-Wei Chung
 import requests
 import mysql.connector
 import os.path

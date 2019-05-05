@@ -1,3 +1,6 @@
+// written by: Kuo-Wei Chung
+// assisted by: Kuo-Wei Chung
+// debugged by: All members
 $(document).ready(function () {
     $('#updateTime').html("Updated at " + getDate());
 

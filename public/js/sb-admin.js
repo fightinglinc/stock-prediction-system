@@ -1,3 +1,6 @@
+// written by: Kuo-Wei Chung
+// assisted by: Kuo-Wei Chung
+// debugged by: All members
 (function($) {
   "use strict"; // Start of use strict
   // datepicker

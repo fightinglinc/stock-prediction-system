@@ -1,3 +1,6 @@
+// written by: Linchen Xie
+// assisted by: Linchen Xie
+// debugged by: All members
 $(document).ready(function () {
     $('#selectCompany, #selectTerm').change(function () {
 

@@ -1,3 +1,6 @@
+# written by: Linchen Xie
+# assisted by: Linchen Xie
+# debugged by: Linchen Xie
 from threading import Timer
 from latest_price import get_latest_price
 
