@@ -5,6 +5,6 @@ Backend: Flask, Restful API <br>
 Database: MySQL <br>
 Algorithms: SVM, ANN, Bayes Curve Fitting <br>
 
-## Architecture.
+## Architecture
 
 ![architecture](achitecture.png)
