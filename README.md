@@ -7,4 +7,4 @@ Algorithms: SVM, ANN, Bayes Curve Fitting <br>
 
 ## Architecture
 
-![architecture](achitecture.png)
+![architecture](architecture.png)
