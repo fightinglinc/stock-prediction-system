@@ -1,16 +1,17 @@
 # written by: Linchen Xie
 # assisted by: Linchen Xie
 # debugged by: Linchen Xie
-import requests
 import csv
 import time
-import mysql.connector
 
-API_KEY = '8ATXKFFXNC10W9J8'
+import mysql.connector
+import requests
+
+API_KEY = 'demo'
 config = {
-    'user': 'Arabella',
-    'password': '12345678',
-    'host': 'cs539-database.ciyg1obu7hnf.us-east-2.rds.amazonaws.com',
+    'user': 'test',
+    'password': 'test',
+    'host': 'localhost',
     'database': '568Project',
     'port': 3306
 }
