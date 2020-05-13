@@ -21,10 +21,10 @@ base_dir = os.path.abspath('../public')
 app = Flask(__name__, template_folder=base_dir, static_folder=base_dir, static_url_path="")
 CORS(app, supports_credentials=True)
 config = {
-    'user': 'Arabella',
-    'password': '12345678',
-    'host': 'cs539-database.ciyg1obu7hnf.us-east-2.rds.amazonaws.com',
-    'database': '568Project',
+    'user': 'root',
+    'password': '123456',
+    'host': 'localhost',
+    'database': 'test',
     'port': 3306
 }
 swagger = Swagger(app)
